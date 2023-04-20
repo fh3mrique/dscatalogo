@@ -1,0 +1,41 @@
+															CONTROLLERS
+No padrão de arquitetura REST (Representational State Transfer), os Controllers são 
+responsáveis por gerenciar as solicitações e coordenar as respostas correspondentes. Eles são
+uma parte fundamental da camada de aplicação da arquitetura REST e são responsáveis por atuar
+como intermediários entre o cliente e o modelo de dados da aplicação.
+
+Os Controllers são responsáveis por receber as solicitações HTTP enviadas pelo cliente, 
+validar e interpretar os dados recebidos, executar as operações necessárias no modelo de 
+dados (geralmente representado por uma camada de serviço ou um conjunto de objetos de domínio), 
+e retornar uma resposta HTTP apropriada ao cliente.
+
+Em outras palavras, os Controllers atuam como uma espécie de "ponte" entre o cliente e a 
+lógica de negócio da aplicação. Eles são responsáveis por garantir que as solicitações do 
+cliente sejam tratadas de forma adequada e que as respostas retornadas estejam em 
+conformidade com os padrões estabelecidos pela API.
+
+Os Controllers podem ser organizados de várias maneiras, dependendo do tamanho e da 
+complexidade da aplicação. Em geral, é comum ter um controlador para cada recurso (Resource) 
+da API, que é responsável por manipular todas as solicitações relacionadas a esse recurso.
+
+Alguns exemplos de tarefas que um Controller pode realizar incluem:
+
+1 ° Validação dos dados de entrada: O Controller é responsável por verificar se os dados recebidos na solicitação são 
+válidos e estão em conformidade com as regras de negócio da aplicação.
+
+2° Chamar serviços ou objetos de domínio: O Controller faz a chamada para a camada de serviço ou objeto de domínio
+ responsável pela lógica de negócio da aplicação.
+
+3° Transformação dos dados de saída: O Controller é responsável por formatar a resposta HTTP para que ela esteja em 
+conformidade com o padrão REST estabelecido pela API.
+
+4° Tratamento de erros: O Controller é responsável por capturar e tratar erros que possam ocorrer durante o 
+processamento da solicitação.
+
+Em resumo, os Controllers são uma parte fundamental da camada de aplicação em uma arquitetura REST. Eles são 
+responsáveis por gerenciar as solicitações do cliente, garantir que as operações sejam executadas de forma adequada
+e retornar respostas HTTP que estejam em conformidade com o padrão REST definido pela API.
+
+
+
+

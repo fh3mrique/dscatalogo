@@ -1,0 +1,22 @@
+																	REPOSITORIES
+No padrão de arquitetura RESTful, a camada de repositório é responsável por gerenciar as operações de persistência de 
+dados em um banco de dados ou qualquer outro meio de armazenamento.
+
+O papel dos repositórios é fornecer uma abstração entre a camada de negócios e o banco de dados, permitindo que a 
+lógica de negócios da aplicação seja escrita de forma independente do banco de dados subjacente. Isso torna o 
+código mais fácil de manter, evoluir e testar, além de permitir que diferentes fontes de dados sejam usadas com
+facilidade.
+
+A camada de repositório geralmente é implementada por meio de interfaces que definem as operações de CRUD 
+(criação, leitura, atualização e exclusão) e outras operações personalizadas que a aplicação precisa. Essas interfaces 
+são anotadas com a anotação "@Repository", que é uma anotação do Spring Framework, indicando que a interface é 
+um repositório.
+
+As classes que implementam essas interfaces são anotadas com a anotação "@Service", indicando que são 
+componentes de serviço que utilizam os repositórios para realizar as operações de persistência. Dessa forma, a lógica 
+de negócios da aplicação pode ser escrita de forma independente do banco de dados subjacente e se concentrar 
+apenas na manipulação dos dados.
+
+Com a utilização dos repositórios, é possível utilizar a funcionalidade de mapeamento objeto-relacional (ORM) do JPA 
+(Java Persistence API) ou outras tecnologias de persistência de dados para facilitar a interação com o banco de dados, 
+simplificando as operações de persistência e permitindo a realização de consultas complexas com facilidade.

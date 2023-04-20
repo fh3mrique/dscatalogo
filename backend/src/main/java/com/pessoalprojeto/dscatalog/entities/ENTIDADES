@@ -1,0 +1,19 @@
+																ENTIDADES
+
+No padrão de arquitetura REST (Representational State Transfer), as entidades representam os 
+recursos manipulados pela API e servem para representar as informações transmitidas entre o 
+cliente e o servidor.
+
+As entidades são usadas para definir os dados que serão enviados ou recebidos nas operações 
+HTTP (GET, POST, PUT, DELETE, etc.) da API. Cada entidade é composta por um conjunto de 
+atributos que representam os dados do recurso que está sendo manipulado.
+
+Por exemplo, se você estiver criando uma API REST para gerenciar produtos em uma loja virtual,
+poderá definir uma entidade "Produto" que contenha atributos como nome, descrição, preço, etc.
+Quando um cliente envia uma solicitação HTTP para criar um novo produto, ele pode enviar um 
+objeto JSON contendo os atributos do produto na solicitação POST. Da mesma forma, quando um 
+cliente solicita a lista de produtos existentes, a API pode retornar um objeto JSON contendo 
+as informações dos produtos.
+
+Em resumo, as entidades são uma parte fundamental do padrão REST, pois elas fornecem uma 
+forma estruturada e padronizada para transmitir e manipular recursos por meio da API.

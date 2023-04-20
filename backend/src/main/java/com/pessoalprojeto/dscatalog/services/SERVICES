@@ -1,0 +1,30 @@
+																				SERVICES
+
+No padrão de arquitetura REST, a camada de serviços é responsável pela lógica de negócios e processamento de 
+dados do sistema. Essa camada é composta por classes Java que implementam operações específicas de negócio, 
+como criar um novo usuário, atualizar informações de um produto, realizar o cálculo de um pedido, entre outras.
+
+Os services (serviços) são criados para isolar a lógica de negócios da camada de controle (controllers) e dos repositórios 
+de dados (repositories). Eles recebem as requisições da camada de controle, processam os dados necessários, 
+interagem com os repositórios de dados para buscar ou salvar informações e retornam as respostas para a camada de 
+controle.
+
+Dessa forma, a camada de serviços é responsável por:
+
+1° Validar as requisições recebidas da camada de controle, verificando se os dados enviados estão de acordo com as 
+regras de negócio do sistema;
+2° Realizar operações de CRUD (Create, Read, Update, Delete) nos dados do sistema, através dos métodos disponibilizados
+pelos repositórios de dados;
+3° Realizar operações de negócio específicas, que não estão relacionadas diretamente às operações de CRUD, como a 
+criação de um relatório, cálculo de taxas, validação de um pedido, entre outras;
+4° Realizar a conversão de dados, transformando os objetos recebidos em requisições HTTP para objetos que possam ser 
+persistidos no banco de dados, e vice-versa;
+5° Gerenciar transações, garantindo que todas as operações realizadas em uma única transação sejam concluídas com 
+sucesso ou desfeitas em caso de falha.
+
+Os services são criados de forma a garantir a modularidade, reutilização e manutenção do código. Eles devem ser 
+facilmente testáveis e escaláveis, possibilitando a evolução da aplicação de forma consistente e segura.
+
+
+
+
