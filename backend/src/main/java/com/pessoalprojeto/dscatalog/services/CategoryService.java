@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
+import javax.persistence.EntityNotFoundException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,7 +33,7 @@ public class CategoryService {
 
 	//MÉTODOS
 	
-	// 1° 
+	// 1° implemnetação do método "findAll" do controller
 	@Transactional(readOnly = true)
 	public List<CategoryDTO>  findAll()
 	{
@@ -54,7 +56,7 @@ public class CategoryService {
 		
 	}
 
-	//2° metodo
+	//2° implementação do método "findById" chamado no controller
 	
 	/*@Transactional : Anotação que indica que o método será executado dentro de uma transação. O parâmetro 
 	 readOnly = true define que a transação será apenas de leitura, ou seja, não permitirá alterações no banco de dados.*/
@@ -77,9 +79,10 @@ public class CategoryService {
 		return new CategoryDTO(entity);
 	}
 
-	//3° método
+	//3° implementação do método "insert" chamado no controller
 	@Transactional()
 	public CategoryDTO insert(CategoryDTO dto) {
+		
 		Category entity = new Category();
 		
 		entity.setName(dto.getName());
@@ -88,4 +91,38 @@ public class CategoryService {
 		
 		return new CategoryDTO(entity);
 	}
+	
+	//4° implementação do método "update" chamado no controller
+	@Transactional
+	public CategoryDTO update(Long id, CategoryDTO dto) {
+		
+	try {
+		/*Tanto o método getById() quanto o método getOne() são usados para buscar um registro em um banco de 
+		dados pelo seu ID único. A diferença principal é que getById() é fornecido por muitas bibliotecas de persistência 
+		de dados e retorna o registro encontrado ou nulo, enquanto getOne() é específico do Spring Data JPA e retorna 
+		uma referência ao objeto do registro sem executar a consulta imediatamente, sendo mais eficiente em termos 
+		de desempenho, mas pode gerar exceção se o registro não for encontrado.*/
+		Category entity = repository.getOne(id);
+		
+		/*altera o nome da categoria com base nos dados fornecidos no objeto dto.*/
+		entity.setName(dto.getName());
+		
+		/*salva as alterações feitas no objeto entity no banco de dados.*/
+		entity = repository.save(entity);
+		
+		/*retorna um objeto CategoryDTO criado a partir do objeto entity.*/
+		return new CategoryDTO(entity);
+	}
+	
+	catch (EntityNotFoundException e) 
+	/*: caso a consulta com o getOne() não retorne um registro correspondente ao ID fornecido, uma exceção de 
+	 EntityNotFoundException será lançada.*/
+	{
+		/* lança uma exceção personalizada com a mensagem "Id não encontrado".*/
+		throw new  EntityNotFoundExceptions("Id não encontrado");
+	}
+	
+	}
+
+	
 }
