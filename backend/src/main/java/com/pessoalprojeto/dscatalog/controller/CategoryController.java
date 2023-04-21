@@ -6,6 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -51,6 +52,17 @@ public class CategoryController {
 		/*Essa linha de código retorna uma resposta HTTP personalizada com um status 200 OK 
 		 (.ok())e o corpo(.body) da resposta contendo uma lista de objetos do tipo Category.*/
 		return ResponseEntity.ok().body(lista);
+	}
+	
+	@GetMapping(value = "/{id}")
+	/*A anotação @PathVariable do Spring Framework vincula parâmetros de um método em um controlador de uma 
+	 aplicação web a variáveis de caminho de uma URI. Por exemplo, @PathVariable("id") pode vincular o valor "123"
+	 a uma variável chamada "id" no método correspondente do controlador a partir da URI "/api/users/123".*/
+	public ResponseEntity<CategoryDTO> findById(@PathVariable Long id){
+		
+		CategoryDTO dto = service.findById(id);
+		
+		return ResponseEntity.ok().body(dto);
 	}
 
 }
