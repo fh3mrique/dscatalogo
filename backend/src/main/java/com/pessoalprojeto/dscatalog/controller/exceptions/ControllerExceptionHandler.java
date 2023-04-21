@@ -10,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import com.pessoalprojeto.dscatalog.services.exceptions.DatabaseException;
 import com.pessoalprojeto.dscatalog.services.exceptions.EntityNotFoundExceptions;
 
 /*@ControllerAdvice é uma anotação usada no Spring Framework para definir um controlador global que gerencia 
@@ -34,5 +35,19 @@ public class ControllerExceptionHandler {
 		
 		return ResponseEntity.status(HttpStatus.NOT_FOUND).body(err) ;
 	}
+	
+	@ExceptionHandler(DatabaseException.class)
+	public ResponseEntity<StandardErro> database (DatabaseException e, HttpServletRequest request ){
+		StandardErro err = new StandardErro();
+		
+		err.setTimestamp(Instant.now());
+		err.setStatus(HttpStatus.BAD_REQUEST.value());
+		err.setError("Database exception");
+		err.setMessage(e.getMessage());
+		err.setPath(request.getRequestURI());
+		
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(err) ;
+	}
+
 
 }

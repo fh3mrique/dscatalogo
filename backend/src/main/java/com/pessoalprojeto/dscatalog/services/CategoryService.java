@@ -7,12 +7,15 @@ import java.util.Optional;
 import javax.persistence.EntityNotFoundException;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pessoalprojeto.dscatalog.dto.CategoryDTO;
 import com.pessoalprojeto.dscatalog.entities.Category;
 import com.pessoalprojeto.dscatalog.repositories.CategoryRepository;
+import com.pessoalprojeto.dscatalog.services.exceptions.DatabaseException;
 import com.pessoalprojeto.dscatalog.services.exceptions.EntityNotFoundExceptions;
 
 @Service
@@ -122,6 +125,25 @@ public class CategoryService {
 		throw new  EntityNotFoundExceptions("Id não encontrado");
 	}
 	
+	}
+
+	public void delete(Long id) {
+		
+		try {
+			
+			repository.deleteById(id);
+			
+		}
+		catch(EmptyResultDataAccessException e) {
+			
+			throw new EntityNotFoundExceptions("id não encontrado");
+		}
+		catch(DataIntegrityViolationException e) {
+			
+			throw new DatabaseException("Violação Integridade do banco ");
+			
+		}
+		
 	}
 
 	

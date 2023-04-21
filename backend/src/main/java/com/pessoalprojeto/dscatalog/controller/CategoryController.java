@@ -12,6 +12,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -113,5 +114,17 @@ public class CategoryController {
 		dto = service.update(id, dto);
 		
 		return ResponseEntity.ok().body(dto);
+	}
+	
+	@DeleteMapping(value = "/{id}")
+	/*@PutMapping é uma anotação do Spring Framework usada em métodos de controladores em Java para lidar 
+	 com requisições HTTP PUT. Essa anotação mapeia uma requisição PUT HTTP para o método anotado, indicando 
+	 que o método deve ser executado quando um cliente faz uma solicitação PUT para um determinado recurso 
+	 da API.*/
+	public ResponseEntity<Void> delete (@PathVariable Long id ){
+		
+		service.delete(id);
+		
+		return ResponseEntity.noContent().build();
 	}
 }
