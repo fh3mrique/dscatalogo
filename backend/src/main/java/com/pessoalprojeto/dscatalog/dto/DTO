@@ -1,0 +1,17 @@
+																							DTO
+
+No padrão de arquitetura REST para o desenvolvimento de APIs, os DTOs (Data Transfer Objects) são objetos que servem
+como um mecanismo para transferir dados entre a camada de controle (controller) e a camada de serviço (service) 
+ou camada de acesso a dados (repository).
+
+Em outras palavras, os DTOs são uma representação de objetos de domínio, que geralmente possuem mais informações
+do que o necessário para uma determinada operação na camada de controle. O uso de DTOs permite que somente 
+as informações necessárias sejam transferidas entre as camadas, reduzindo o tráfego de dados na rede e aumentando 
+o desempenho da aplicação.
+
+Além disso, os DTOs também permitem que a estrutura de dados retornado pela API seja adaptada para atender às 
+necessidades específicas de cada aplicação cliente, sem afetar a estrutura dos objetos de domínio.
+
+O Spring Framework oferece suporte para o uso de DTOs através de mapeadores de objetos, como o ModelMapper 
+e o MapStruct. Esses mapeadores podem ser usados para converter objetos de domínio em DTOs e vice-versa, 
+facilitando o desenvolvimento de APIs REST eficientes e escaláveis.

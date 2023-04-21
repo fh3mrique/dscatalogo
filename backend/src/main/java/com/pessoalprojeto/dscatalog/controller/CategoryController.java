@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.pessoalprojeto.dscatalog.entities.Category;
+import com.pessoalprojeto.dscatalog.dto.CategoryDTO;
 import com.pessoalprojeto.dscatalog.services.CategoryService;
 
 @RestController
@@ -41,10 +41,10 @@ public class CategoryController {
 	/*A anotação @GetMapping é usada em métodos de um controlador Spring para mapear uma 
 	  solicitação HTTP GET a um método específico. O valor do parâmetro da anotação 
 	  especifica o URI que será mapeado, ou seja, o caminho no qual o método será acionado.*/
-	public ResponseEntity<List <Category>> findAll(){
+	public ResponseEntity<List <CategoryDTO>> findAll(){
 		/*declara uma variável chamada "lista" que é uma instância de 
 		 uma classe ArrayList vazia que contém uma lista de objetos do tipo "Category".*/
-		List<Category> lista;
+		List<CategoryDTO> lista;
 		
 		lista = service.findAll();
 		

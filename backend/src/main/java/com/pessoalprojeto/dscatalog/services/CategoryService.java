@@ -1,10 +1,14 @@
 package com.pessoalprojeto.dscatalog.services;
 
+import java.util.ArrayList;
 import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.pessoalprojeto.dscatalog.dto.CategoryDTO;
 import com.pessoalprojeto.dscatalog.entities.Category;
 import com.pessoalprojeto.dscatalog.repositories.CategoryRepository;
 
@@ -24,12 +28,26 @@ public class CategoryService {
 	private CategoryRepository repository;
 
 	//MÉTODOS
-	
-	public List<Category>  findAll(){
+	@Transactional(readOnly = true)
+	public List<CategoryDTO>  findAll(){
 		
 		/*O método findAll() da JPA é um método que retorna uma lista de todos os registros de uma tabela do banco de 
 		 dados que correspondem a uma entidade JPA*/
-		return repository.findAll();
+		List<Category> listaCategory = repository.findAll();
+		
+		/*cria uma nova lista vazia do tipo CategoryDTO. Essa lista será preenchida com objetos do tipo CategoryDTO, 
+		 que é um objeto que representa uma versão simplificada da entidade Category e é utilizado para transferir dados entre a 
+		 camada de serviço e a camada de controle*/
+		List<CategoryDTO> listaDto = new ArrayList<>();
+		
+		
+		for (Category cat : listaCategory)//- inicia um loop que itera sobre cada objeto Category da lista listaCategory
+		{
+			/*- cria um novo objeto CategoryDTO a partir do objeto cat atualmente em loop e adiciona o novo objeto à lista listaDto.*/
+			listaDto.add(new CategoryDTO(cat));
+		}
+		
+		return listaDto;
 		
 	}
 }
