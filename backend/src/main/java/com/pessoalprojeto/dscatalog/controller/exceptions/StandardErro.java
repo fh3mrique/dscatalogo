@@ -17,6 +17,8 @@ public class StandardErro implements Serializable {
 		
 	}
 
+	/*A classe também tem um construtor padrão vazio e getters e setters para cada uma das variáveis de instância. 
+	 Esses getters e setters permitem que outras classes acessem e modifiquem os valores das variáveis de instância.*/
 	public Instant getTimestamp() {
 		return timestamp;
 	}

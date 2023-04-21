@@ -31,9 +31,10 @@ public class CategoryService {
 
 	//MÉTODOS
 	
+	// 1° 
 	@Transactional(readOnly = true)
-	public List<CategoryDTO>  findAll(){
-		
+	public List<CategoryDTO>  findAll()
+	{
 		/*O método findAll() da JPA é um método que retorna uma lista de todos os registros de uma tabela do banco de 
 		 dados que correspondem a uma entidade JPA*/
 		List<Category> listaCategory = repository.findAll();
@@ -53,6 +54,8 @@ public class CategoryService {
 		
 	}
 
+	//2° metodo
+	
 	/*@Transactional : Anotação que indica que o método será executado dentro de uma transação. O parâmetro 
 	 readOnly = true define que a transação será apenas de leitura, ou seja, não permitirá alterações no banco de dados.*/
 	@Transactional(readOnly = true)
@@ -71,6 +74,18 @@ public class CategoryService {
 		/*O objeto Category é utilizado para construir um objeto CategoryDTO, que é retornado pelo método. A 
 		conversão é feita através do construtor da classe CategoryDTO, que recebe um objeto do tipo Category 
 		como parâmetro.*/
+		return new CategoryDTO(entity);
+	}
+
+	//3° método
+	@Transactional()
+	public CategoryDTO insert(CategoryDTO dto) {
+		Category entity = new Category();
+		
+		entity.setName(dto.getName());
+		
+		entity = repository.save(entity);
+		
 		return new CategoryDTO(entity);
 	}
 }

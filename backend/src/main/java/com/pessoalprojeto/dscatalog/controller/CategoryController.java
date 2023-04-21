@@ -1,14 +1,19 @@
 package com.pessoalprojeto.dscatalog.controller;
 
 
+import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pessoalprojeto.dscatalog.dto.CategoryDTO;
 import com.pessoalprojeto.dscatalog.services.CategoryService;
@@ -32,6 +37,9 @@ public class CategoryController {
 	private CategoryService service;
 	
 	//MÉTODOS
+	
+	// 1° Método/operação para buscar uma lista de categorias do banco
+	
 	/*O ResponseEntity<> é uma classe genérica do Spring Framework que permite retornar uma 
 	  resposta HTTP personalizada com informações sobre o status, cabeçalhos e corpo da 
 	  resposta. O tipo genérico especifica o tipo de dados que será retornado como corpo 
@@ -54,6 +62,7 @@ public class CategoryController {
 		return ResponseEntity.ok().body(lista);
 	}
 	
+	//2° Método/operação para buscar uma Categoria por id do  do banco
 	@GetMapping(value = "/{id}")
 	/*A anotação @PathVariable do Spring Framework vincula parâmetros de um método em um controlador de uma 
 	 aplicação web a variáveis de caminho de uma URI. Por exemplo, @PathVariable("id") pode vincular o valor "123"
@@ -63,6 +72,28 @@ public class CategoryController {
 		CategoryDTO dto = service.findById(id);
 		
 		return ResponseEntity.ok().body(dto);
+	}
+	
+	//3° Método/operação para inserir uma categoria ao banco
+	
+	@PostMapping
+	/*"@PostMapping" é uma anotação do Spring Framework que indica que um método de controle deve tratar as 
+	 solicitações HTTP do tipo POST para um endpoint específico. O Spring Framework irá mapear a solicitação para o 
+	 *método de controle correspondente, que pode manipular os dados e retornar uma resposta HTTP adequada.*/
+	public ResponseEntity<CategoryDTO> insert (@RequestBody CategoryDTO dto)
+	/*@RequestBody" é uma anotação do Spring Framework para o desenvolvimento de aplicativos web em Java que 
+	 indica que o parâmetro do método de controle de requisições HTTP deve ser vinculado ao corpo da solicitação HTTP.*/
+	{
+		dto = service.insert(dto);
+		
+		/*o método trata as solicitações HTTP do tipo POST enviadas para o endpoint "/categories", insere uma nova 
+		categoria no banco de dados, cria uma URI para a nova categoria e retorna uma resposta HTTP com o código
+		de status 201 (CREATED) e o objeto "CategoryDTO" atualizado como corpo da resposta.*/
+		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path("/{id}")
+				.buildAndExpand(dto.getId()).toUri();
+		
+		
+		return ResponseEntity.created(uri).body(dto);
 	}
 
 }

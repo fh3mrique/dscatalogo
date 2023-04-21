@@ -1,6 +1,6 @@
 package com.pessoalprojeto.dscatalog.controller.exceptions;
 
-import java.net.http.HttpRequest;
+
 import java.time.Instant;
 
 import javax.servlet.http.HttpServletRequest;
