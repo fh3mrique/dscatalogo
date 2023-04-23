@@ -1,12 +1,16 @@
 package com.pessoalprojeto.dscatalog.entities;
 
 import java.io.Serializable;
+import java.time.Instant;
 import java.util.Objects;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.PrePersist;
+import javax.persistence.PreUpdate;
 import javax.persistence.Table;
 
 
@@ -36,6 +40,17 @@ armazenado ou transmitido, e posteriormente convertido de volta para o seu estad
 	private Long id; //id da categoria
 	private String name; //nome da categoria
 	
+	//Atriburtos de auditória
+	
+	/*A anotação @Column é utilizada para definir a coluna do banco de dados para o campo createAt. No caso, a 
+	definição da coluna indica que o campo armazena um valor de data e hora sem informações de fuso horário. 
+	O tipo de dado utilizado para representar o valor do campo é Instant, que é uma classe do pacote java.time que 
+	representa um instante na linha do tempo em UTC (Tempo Universal Coordenado).*/
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
+	private Instant createdAt; //instante que essse registro foi criado
+	private Instant updateAt; //instante que essse registro foi criado
+	
+	
 	//Construtores
 	public Category() {
 		
@@ -62,6 +77,36 @@ armazenado ou transmitido, e posteriormente convertido de volta para o seu estad
 	public void setName(String name) {
 		this.name = name;
 	}
+	
+	//GETTERS dados de auditória(NÃO precisamos de set pq em teoria não podemos setar um dado de auditoria)
+	public Instant getCreateAt() {
+		return createdAt;
+	}
+
+	public Instant getUpdatAT() {
+		return updateAt;
+	}
+
+	//MÉTODOS de auditória
+	
+	@PrePersist
+	/*A anotação @PrePersist é usada para indicar que um método de uma classe de entidade JPA deve ser 
+	executado antes que a entidade seja persistida no banco de dados.*/
+	public void registerCreateAT() {
+		
+		/*utiliza a classe Instant do pacote java.time para obter o instante atual na linha do tempo em UTC, usando o 
+		 método now(). Esse valor é atribuído ao campo createAT da classe.*/
+		createdAt = Instant.now();
+	}
+	
+	@PreUpdate
+	/*A anotação @PreUpdate é usada em uma classe de entidade JPA (Java Persistence API) para indicar que um 
+	método deve ser executado antes que a entidade seja atualizada no banco de dados.*/
+	public void registerUpdateAt() {
+		updateAt = Instant.now();
+	}
+	
+	
 
 	//Equals e Hashcode
 	@Override
