@@ -8,7 +8,7 @@ formatos, como JSON ou XML. Ele permite que o desenvolvedor tenha controle total
 a resposta HTTP retornada para o cliente.*/
 
 import java.net.URI;
-import java.util.List;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
