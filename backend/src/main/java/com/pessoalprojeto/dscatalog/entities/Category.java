@@ -61,6 +61,8 @@ armazenado ou transmitido, e posteriormente convertido de volta para o seu estad
 		this.name = name;
 	}
 
+	
+	
 	//Getters and Setters
 	public Long getId() {
 		return id;

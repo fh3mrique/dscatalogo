@@ -9,6 +9,8 @@ import javax.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,24 +40,13 @@ public class CategoryService {
 	
 	// 1° implemnetação do método "findAll" do controller
 	@Transactional(readOnly = true)
-	public List<CategoryDTO>  findAll()
+	public Page<CategoryDTO>  findAllPaged(PageRequest pageRequest)
 	{
 		/*O método findAll() da JPA é um método que retorna uma lista de todos os registros de uma tabela do banco de 
 		 dados que correspondem a uma entidade JPA*/
-		List<Category> listaCategory = repository.findAll();
+		Page<Category> listaCategory = repository.findAll(pageRequest);
 		
-		/*cria uma nova lista vazia do tipo CategoryDTO. Essa lista será preenchida com objetos do tipo CategoryDTO, 
-		 que é um objeto que representa uma versão simplificada da entidade Category e é utilizado para transferir dados entre a 
-		 camada de serviço e a camada de controle*/
-		List<CategoryDTO> listaDto = new ArrayList<>();
-		
-		for (Category cat : listaCategory)//- inicia um loop que itera sobre cada objeto Category da lista listaCategory
-		{
-			/*- cria um novo objeto CategoryDTO a partir do objeto cat atualmente em loop e adiciona o novo objeto à lista listaDto.*/
-			listaDto.add(new CategoryDTO(cat));
-		}
-		
-		return listaDto;
+		return listaCategory.map(x -> new CategoryDTO(x));
 		
 	}
 

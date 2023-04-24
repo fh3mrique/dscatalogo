@@ -11,6 +11,9 @@ import java.net.URI;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
@@ -52,17 +56,31 @@ public class CategoryController {
 	/*A anotação @GetMapping é usada em métodos de um controlador Spring para mapear uma 
 	  solicitação HTTP GET a um método específico. O valor do parâmetro da anotação 
 	  especifica o URI que será mapeado, ou seja, o caminho no qual o método será acionado.*/
-	public ResponseEntity<List <CategoryDTO>> findAll(){
+	public ResponseEntity<Page <CategoryDTO>> findAllPaged(
+			/*	page: o número da página que se deseja recuperar. O valor padrão é zero (0).
+			   	linesPerPage: o número de itens que se deseja retornar em cada página. O valor padrão é 12.
+				direction: a direção da ordenação dos resultados. Pode ser "ASC" (ascendente) ou "DESC" (descendente). 
+				O valor padrão é "DESC".
+				orderBy: o campo pelo qual se deseja ordenar os resultados. O valor padrão é "name".*/
+			@RequestParam(value = "page", defaultValue = "0") Integer page,
+			@RequestParam(value = "linesPerPage", defaultValue = "12") Integer linesPerPage,
+			@RequestParam(value = "direction", defaultValue = "ASC") String direction,
+			@RequestParam(value = "orderBy", defaultValue = "id") String orderBy
+			){
+		
+		/*PageRequest é uma classe do Spring Data que representa uma solicitação de página para dados paginados. 
+		 Ela é utilizada em conjunto com a interface Pageable para definir as informações necessárias para recuperar uma 
+		 página de dados.*/
+		PageRequest pageRequest = PageRequest.of(page, linesPerPage, Direction.valueOf(direction), orderBy );
+		
 		
 		/*declara uma variável chamada "lista" que é uma instância de 
 		 uma classe ArrayList vazia que contém uma lista de objetos do tipo "Category".*/
-		List<CategoryDTO> lista;
-		
-		//ESSE MÉTODO ESTÁ IMPLEMENTADO NA CAMADA SERVICE
-		lista = service.findAll();
+		Page<CategoryDTO> lista = service.findAllPaged(pageRequest);
 		
 		/*Essa linha de código retorna uma resposta HTTP personalizada com um status 200 OK 
 		 (.ok())e o corpo(.body) da resposta contendo uma lista de objetos do tipo Category.*/
+		
 		return ResponseEntity.ok().body(lista);
 	}
 	
