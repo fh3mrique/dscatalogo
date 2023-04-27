@@ -12,23 +12,27 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.pessoalprojeto.dscatalog.dto.CategoryDTO;
 import com.pessoalprojeto.dscatalog.dto.ProductDTO;
+import com.pessoalprojeto.dscatalog.entities.Category;
 import com.pessoalprojeto.dscatalog.entities.Product;
+import com.pessoalprojeto.dscatalog.repositories.CategoryRepository;
 import com.pessoalprojeto.dscatalog.repositories.ProductRepository;
 import com.pessoalprojeto.dscatalog.services.exceptions.DatabaseException;
 import com.pessoalprojeto.dscatalog.services.exceptions.EntityNotFoundExceptions;
 
 @Service
-
 public class ProductService {
 
 	// ATRIBUTOS
 
 	@Autowired
 	private ProductRepository repository;
+	
+	@Autowired
+	private CategoryRepository categoryRepository;
 
 	// MÉTODOS
-
 	@Transactional(readOnly = true)
 	public Page<ProductDTO> findAllPaged(PageRequest pageRequest) {
 		Page<Product> listaProduct = repository.findAll(pageRequest);
@@ -50,6 +54,14 @@ public class ProductService {
 	public ProductDTO insert(ProductDTO dto) {
 
 		Product entity = new Product();
+		/*No método "insert" e no método "update", é necessário definir os atributos de uma entidade do tipo "Product" 
+		 com base em um parâmetro DTO e, em seguida, passar essa entidade como argumento para o construtor 
+		 de "ProductDTO", que recebe uma entidade como parâmetro. Para evitar repetição de código em ambos 
+		 os métodos, podemos criar um método privado auxiliar que copia os atributos de "Product" para "ProductDTO". 
+		                                       copyDTOtoEntity (ultimo método dessa classe)
+		 */
+		
+		copyDTOtoEnrity (dto, entity);
 
 		// entity.setName(dto.getName());
 
@@ -66,6 +78,7 @@ public class ProductService {
 			Product entity = repository.getOne(id);
 
 			// entity.setName(dto.getName());
+			copyDTOtoEnrity (dto, entity);
 
 			entity = repository.save(entity);
 
@@ -96,6 +109,23 @@ public class ProductService {
 
 		}
 
+	}
+	
+	private void copyDTOtoEnrity(ProductDTO dto, Product entity) {
+		
+		entity.setName(dto.getName());
+		entity.setDescription(dto.getDescription());
+		entity.setPrice(dto.getPrice());
+		entity.setImgUrl(dto.getImgUrl());
+		entity.setDate(dto.getDate());
+		
+		entity.getCategories().clear();
+		
+		for (CategoryDTO catDTO : dto.getCategories()) {
+			Category cat = categoryRepository.getOne(catDTO.getId());
+			entity.getCategories().add(cat);
+		}
+		
 	}
 
 }
