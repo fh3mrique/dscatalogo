@@ -10,7 +10,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
+//import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -40,11 +41,11 @@ public class CategoryService {
 	
 	// 1° implemnetação do método "findAll" do controller
 	@Transactional(readOnly = true)
-	public Page<CategoryDTO>  findAllPaged(PageRequest pageRequest)
+	public Page<CategoryDTO>  findAllPaged(Pageable pageable)
 	{
 		/*O método findAll() da JPA é um método que retorna uma lista de todos os registros de uma tabela do banco de 
 		 dados que correspondem a uma entidade JPA*/
-		Page<Category> listaCategory = repository.findAll(pageRequest);
+		Page<Category> listaCategory = repository.findAll(pageable);
 		
 		return listaCategory.map(x -> new CategoryDTO(x));
 		
