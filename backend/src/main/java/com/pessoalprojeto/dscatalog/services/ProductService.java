@@ -104,6 +104,7 @@ public class ProductService {
 		} catch (EmptyResultDataAccessException e) {
 
 			throw new EntityNotFoundExceptions("id não encontrado");
+			
 		} catch (DataIntegrityViolationException e) {
 
 			throw new DatabaseException("Violação Integridade do banco ");
