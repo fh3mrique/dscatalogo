@@ -29,7 +29,7 @@ public class ProductService {
 
 	@Autowired
 	private ProductRepository repository;
-	
+
 	@Autowired
 	private CategoryRepository categoryRepository;
 
@@ -55,14 +55,16 @@ public class ProductService {
 	public ProductDTO insert(ProductDTO dto) {
 
 		Product entity = new Product();
-		/*No método "insert" e no método "update", é necessário definir os atributos de uma entidade do tipo "Product" 
-		 com base em um parâmetro DTO e, em seguida, passar essa entidade como argumento para o construtor 
-		 de "ProductDTO", que recebe uma entidade como parâmetro. Para evitar repetição de código em ambos 
-		 os métodos, podemos criar um método privado auxiliar que copia os atributos de "Product" para "ProductDTO". 
-		                                       copyDTOtoEntity (ultimo método dessa classe)
+		/*
+		 * No método "insert" e no método "update", é necessário definir os atributos de
+		 * uma entidade do tipo "Product" com base em um parâmetro DTO e, em seguida,
+		 * passar essa entidade como argumento para o construtor de "ProductDTO", que
+		 * recebe uma entidade como parâmetro. Para evitar repetição de código em ambos
+		 * os métodos, podemos criar um método privado auxiliar que copia os atributos
+		 * de "Product" para "ProductDTO". copyDTOtoEntity (ultimo método dessa classe)
 		 */
-		
-		copyDTOtoEnrity (dto, entity);
+
+		copyDTOtoEnrity(dto, entity);
 
 		// entity.setName(dto.getName());
 
@@ -73,13 +75,12 @@ public class ProductService {
 
 	@Transactional
 	public ProductDTO update(Long id, ProductDTO dto) {
-
 		try {
 
 			Product entity = repository.getOne(id);
 
 			// entity.setName(dto.getName());
-			copyDTOtoEnrity (dto, entity);
+			copyDTOtoEnrity(dto, entity);
 
 			entity = repository.save(entity);
 
@@ -89,14 +90,12 @@ public class ProductService {
 		catch (EntityNotFoundException e)
 
 		{
-
 			throw new EntityNotFoundExceptions("Id não encontrado");
 		}
-
 	}
+	
 
 	public void delete(Long id) {
-
 		try {
 
 			repository.deleteById(id);
@@ -104,7 +103,7 @@ public class ProductService {
 		} catch (EmptyResultDataAccessException e) {
 
 			throw new EntityNotFoundExceptions("id não encontrado");
-			
+
 		} catch (DataIntegrityViolationException e) {
 
 			throw new DatabaseException("Violação Integridade do banco ");
@@ -112,22 +111,22 @@ public class ProductService {
 		}
 
 	}
-	
+
 	private void copyDTOtoEnrity(ProductDTO dto, Product entity) {
-		
+
 		entity.setName(dto.getName());
 		entity.setDescription(dto.getDescription());
 		entity.setPrice(dto.getPrice());
 		entity.setImgUrl(dto.getImgUrl());
 		entity.setDate(dto.getDate());
-		
+
 		entity.getCategories().clear();
-		
+
 		for (CategoryDTO catDTO : dto.getCategories()) {
 			Category cat = categoryRepository.getOne(catDTO.getId());
 			entity.getCategories().add(cat);
 		}
-		
+
 	}
 
 }

@@ -21,6 +21,10 @@ public class Factory {
 		return new ProductDTO(produtos, produtos.getCategories());
 	}
 	
+	public static Category criarCategory() {
+		return  new Category(2l, "eletronics");
+	}
+	
 	
 
 }
