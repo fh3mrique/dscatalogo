@@ -48,6 +48,7 @@ public class ProductServiceTests {
 	@Mock
 	private ProductRepository repositorio;
 	@Mock
+	/*Sempre que criamos um mock  não podemos esquecer que simular o comportamentos desse mock*/
 	private CategoryRepository categoryRepository;
 	
 	private Long idExistente;
@@ -73,10 +74,12 @@ public class ProductServiceTests {
 		categoria = Factory.criarCategory();
 		dto = Factory.criarProdutoDTO();
 		
+		//SIMULANDO MÉTODOS DO MOCK ProductRepository
+		
 		//comportamento simulado repository.findbyid(pageble)
 		/*QUANDO chamar o findAll passando qualquer valor como argumento(tive que fazer um cast para Pageable pq o findAll
 		 tem varias sobrecargas, e a nois interessa  a que retorna um pageable, logo é obrigatório fazer um cast ) 
-		 ENTAORETORNE um page do PageImp */
+		 ENTAO RETORNE um page do PageImp */
 		Mockito.when(repositorio.findAll((Pageable)ArgumentMatchers.any())).thenReturn(page);
 		
 		
@@ -109,6 +112,9 @@ public class ProductServiceTests {
 	}
 	
 	
+	
+	//TESTANDO MÉTODOS DO INJECT MOCK ProductService 
+	
 	//TESTANDO MÉTODO "findAllPaged" DO SERVICE
 	@Test
 	public void FindAllPagedShouldRetornaPage() {
@@ -134,7 +140,6 @@ public class ProductServiceTests {
 		 foi chamado com os argumentos corretos, quantas vezes foi chamado, entre outras verificações.*/
 		Mockito.verify(repositorio, Mockito.times(1)).deleteById(idExistente);
 		}
-	
 	
 	@Test
 	public void deleteShouldLancaDatabaseExceptionWhenIdForDependente() {
