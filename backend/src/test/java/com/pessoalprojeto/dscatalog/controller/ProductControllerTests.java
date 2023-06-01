@@ -1,6 +1,9 @@
 package com.pessoalprojeto.dscatalog.controller;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -23,6 +26,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.pessoalprojeto.dscatalog.dto.ProductDTO;
 
 import com.pessoalprojeto.dscatalog.services.ProductService;
+import com.pessoalprojeto.dscatalog.services.exceptions.DatabaseException;
 import com.pessoalprojeto.dscatalog.services.exceptions.EntityNotFoundExceptions;
 import com.pessoalprojeto.dscatalog.tests.Factory;
 
@@ -37,6 +41,10 @@ public class ProductControllerTests {
 	private MockMvc mockMvc;
 	
 	@Autowired
+	/*O ObjectMapper é uma biblioteca Java usada para mapear objetos Java para JSON e vice-versa. Faz parte da 
+	biblioteca Jackson, que é amplamente usada para processamento de JSON em aplicativos Java. Ele oferece recursos 
+	avançados para personalização da serialização e desserialização, tratamento de vários tipos de dados e gerenciamento 
+	de estruturas de objetos complexas.*/
 	private ObjectMapper objectMapper;
 	
 	@MockBean
@@ -50,14 +58,15 @@ public class ProductControllerTests {
 	private ProductDTO produtoDto;
 	private Long idExistente;
 	private Long idNaoExistente;
+	private Long idDepedente;
 
-	
 	
 	@BeforeEach
 	 void setUp() throws Exception  {
 		
 		idExistente = 1L;
 		idNaoExistente = 1000L;
+		idDepedente = 4L;
 		produtoDto = Factory.criarProdutoDTO();
 		
 		
@@ -73,16 +82,23 @@ public class ProductControllerTests {
 		Mockito.when(productService.findById(idExistente)).thenReturn(produtoDto);
 		Mockito.when(productService.findById(idNaoExistente)).thenThrow(EntityNotFoundExceptions.class);
 		
-		//comportamento simulado productService.findById
+		//comportamento simulado productService.update
 		Mockito.when(productService.update(ArgumentMatchers.eq(idExistente), ArgumentMatchers.any())).thenReturn(produtoDto);
 		Mockito.when(productService.update(ArgumentMatchers.eq(idNaoExistente), ArgumentMatchers.any())).thenThrow(EntityNotFoundExceptions.class);
 	
+		//comportamento simulado productService.insert
+		Mockito.when(productService.insert(ArgumentMatchers.any())).thenReturn(produtoDto);
+				
+		//comportamento simulado productService.update(como ele retorna void a muda, AÇÃO --> CONSEQUENCIA)
+		Mockito.doNothing().when(productService).delete(idExistente);
+		Mockito.doThrow(EntityNotFoundExceptions.class).when(productService).delete(idNaoExistente);
+		Mockito.doThrow(DatabaseException.class).when(productService).delete(idDepedente);
 	}
 	
 	
 	//●	TESTES DA CAMADA WEB COM  da MockMvc
 
-	
+	//TESTE MÉTODO ProductController.findAllPaged
 	@Test
 	public void findAllPagedShouldPage() throws Exception {
 		/*Essa linha de código simula uma requisição GET para o endpoint "/products" e define que o tipo de conteúdo aceito 
@@ -121,11 +137,14 @@ public class ProductControllerTests {
 			
 	}
 	
+	//TESTE MÉTODO ProductController.update
 	@Test
 	public void updateShouldRetornaProductWhenIdExistir() throws Exception {
+		
+		/*Serialização: Para converter um objeto Java em JSON, você pode usar o método writeValueAsString()*/
 		String jsonbody = objectMapper.writeValueAsString(produtoDto);
 		
-		ResultActions result = mockMvc.perform(get("/products/{id}", idExistente)
+		ResultActions result = mockMvc.perform(put("/products/{id}", idExistente)
 				.content(jsonbody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
@@ -133,15 +152,14 @@ public class ProductControllerTests {
 		result.andExpect(status().isOk());
 		result.andExpect(jsonPath("$.id").exists());
 		result.andExpect(jsonPath("$.name").exists());
-		result.andExpect(jsonPath("$.description").exists());
-		
+		result.andExpect(jsonPath("$.description").exists());	
 	}
 	
 	@Test
 	public void updateShouldRetornaNotFoundWhenIdNaoExistir() throws Exception {
 		String jsonbody = objectMapper.writeValueAsString(produtoDto);
 		
-		ResultActions result = mockMvc.perform(get("/products/{id}", idNaoExistente)
+		ResultActions result = mockMvc.perform(put("/products/{id}", idNaoExistente)
 				.content(jsonbody)
 				.contentType(MediaType.APPLICATION_JSON)
 				.accept(MediaType.APPLICATION_JSON));
@@ -149,6 +167,42 @@ public class ProductControllerTests {
 		result.andExpect(status().isNotFound());
 	
 	}
+	
+	//TESTE MÉTODO ProductController.insert
+		@Test
+		public void insertShouldProductDtoCreated() throws Exception {
+			
+			String jsonbody = objectMapper.writeValueAsString(produtoDto);
+			
+			ResultActions result = mockMvc.perform(post("/products")
+					.content(jsonbody)
+					.contentType(MediaType.APPLICATION_JSON)
+					.accept(MediaType.APPLICATION_JSON));
+			
+			result.andExpect(status().isCreated());
+			result.andExpect(jsonPath("$.id").exists());
+			result.andExpect(jsonPath("$.name").exists());
+			result.andExpect(jsonPath("$.description").exists());	
+		}
+		
+		//TESTE MÉTODO ProductController.delete
+		@Test
+		public void deleteShouldNoContentWhenIdExistir() throws Exception {
+			
+			ResultActions result = mockMvc.perform(delete("/products/{id}", idExistente)
+					.accept(MediaType.APPLICATION_JSON));
+			
+			result.andExpect(status().isNoContent());
+		}
+		
+		@Test
+		public void deleteShouldNotFoundWhenIdNaoExistir() throws Exception {
+			
+			ResultActions result = mockMvc.perform(delete("/products/{id}", idNaoExistente)
+					.accept(MediaType.APPLICATION_JSON));
+			
+			result.andExpect(status().isNotFound());	
+		}
 	
 
 }
