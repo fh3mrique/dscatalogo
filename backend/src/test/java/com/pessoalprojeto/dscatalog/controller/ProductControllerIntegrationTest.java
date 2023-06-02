@@ -16,6 +16,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.pessoalprojeto.dscatalog.dto.ProductDTO;
+import com.pessoalprojeto.dscatalog.tests.Factory;
+
 @SpringBootTest
 @Transactional
 @AutoConfigureMockMvc
@@ -28,6 +32,9 @@ public class ProductControllerIntegrationTest {
 	
 	@Autowired
 	private MockMvc mockMvc;
+	
+	@Autowired
+	private ObjectMapper objectMapper;
 	
 	private Long idExistente;
 	private Long idNaoExistente;
@@ -53,6 +60,41 @@ public class ProductControllerIntegrationTest {
 		result.andExpect(jsonPath("$.content[1].name").value("PC Gamer"));
 		result.andExpect(jsonPath("$.content[2].name").value("PC Gamer Alfa"));
 				
+	}
+	
+	@Test
+	public void updateShouldRetornaProductWhenIdExistir() throws Exception {
+		
+		ProductDTO produtoDto = Factory.criarProdutoDTO();
+		
+		String jsonbody = objectMapper.writeValueAsString(produtoDto);
+		String nomeEsperado = produtoDto.getName();
+		String descriptionEsperado = produtoDto.getDescription();
+		
+		ResultActions result = mockMvc.perform(put("/products/{id}", idExistente)
+				.content(jsonbody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isOk());
+		result.andExpect(jsonPath("$.id").value(idExistente));
+		result.andExpect(jsonPath("$.name").value(nomeEsperado));
+		result.andExpect(jsonPath("$.description").value(descriptionEsperado));	
+	}
+	
+	@Test
+	public void updateShouldRetornaNotFoundWhenIdNaoExistir() throws Exception {
+		
+		ProductDTO produtoDto = Factory.criarProdutoDTO();
+		
+		String jsonbody = objectMapper.writeValueAsString(produtoDto);
+		
+		ResultActions result = mockMvc.perform(put("/products/{id}", idNaoExistente)
+				.content(jsonbody)
+				.contentType(MediaType.APPLICATION_JSON)
+				.accept(MediaType.APPLICATION_JSON));
+		
+		result.andExpect(status().isNotFound());
 	}
 
 }
