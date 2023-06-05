@@ -2,16 +2,20 @@ package com.pessoalprojeto.dscatalog.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToMany;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
 import javax.persistence.Table;
+
 
 
 @Entity
@@ -50,6 +54,10 @@ armazenado ou transmitido, e posteriormente convertido de volta para o seu estad
 	private Instant createdAt; //instante que essse registro foi criado
 	private Instant updateAt; //instante que essse registro foi criado
 	
+	//mapeamento da volta (uma categoria deve conhecer os produtos associados a ela)
+	@ManyToMany(mappedBy = "categories")
+	private Set<Product> products = new HashSet<>();
+	
 	
 	//Construtores
 	public Category() {
@@ -80,6 +88,10 @@ armazenado ou transmitido, e posteriormente convertido de volta para o seu estad
 		this.name = name;
 	}
 	
+	public Set<Product> getProducts() {
+		return products;
+	}
+
 	//GETTERS dados de auditória(NÃO precisamos de set pq em teoria não podemos setar um dado de auditoria)
 	public Instant getCreateAt() {
 		return createdAt;
