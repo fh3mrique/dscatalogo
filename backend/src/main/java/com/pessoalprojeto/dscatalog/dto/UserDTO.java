@@ -4,14 +4,21 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotEmpty;
+
 import com.pessoalprojeto.dscatalog.entities.User;
 
 public class UserDTO implements Serializable {
 	private static final long serialVersionUID = 1L;
 	
+	/*para essas contraints de validação funcionarem, em toda requisição do controller que receba deve ser 
+     anotado com @Valid */
 	private Long id;
+	@NotEmpty(message = "Esse campo não pode ser vazio")
 	private String firstName;
 	private String lastName;
+	@Email(message = "Esse email deve ser valído")
 	private String email;
 	
 	Set<RoleDTO> roles = new HashSet<>();
