@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -25,6 +26,11 @@ public class User implements Serializable {
 	private Long id;
 	private String firstName;
 	private String lastName;
+	@Column(unique = true)
+	/*A anotação @Column(unique = true) no JPA garante que o valor de uma coluna em um banco de dados 
+	seja único. Ao aplicá-la a um campo ou propriedade em uma entidade, evita-se a duplicação desse valor 
+	em outros registros do banco de dados. Isso é especialmente útil para campos que precisam ser exclusivos, 
+	como endereços de e-mail em uma tabela de usuários.*/
 	private String email;
 	private String password;
 	
