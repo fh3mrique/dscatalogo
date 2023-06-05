@@ -10,11 +10,13 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.data.domain.Page;
 //import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.pessoalprojeto.dscatalog.dto.RoleDTO;
 import com.pessoalprojeto.dscatalog.dto.UserDTO;
+import com.pessoalprojeto.dscatalog.dto.UserInsertDTO;
 import com.pessoalprojeto.dscatalog.entities.Role;
 import com.pessoalprojeto.dscatalog.entities.User;
 import com.pessoalprojeto.dscatalog.repositories.RoleRepository;
@@ -30,6 +32,10 @@ public class UserService {
 	
 	@Autowired
 	private RoleRepository roleRepository;
+	
+	//beans de métodos
+	@Autowired
+	private BCryptPasswordEncoder passwordEncriptar;
 	
 	// MÉTODOS
 	@Transactional(readOnly = true)
@@ -51,12 +57,11 @@ public class UserService {
 	}
 
 	@Transactional()
-	public UserDTO insert(UserDTO dto) {
+	public UserDTO insert(UserInsertDTO dto) {
 
 		User entity = new User();
-
 		copyDTOtoEnrity(dto, entity);
-
+		entity.setPassword( passwordEncriptar.encode(dto.getPassword()) );
 		entity = repository.save(entity);
 
 		return new UserDTO(entity);
