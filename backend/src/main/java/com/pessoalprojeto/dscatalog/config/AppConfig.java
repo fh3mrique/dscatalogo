@@ -1,5 +1,6 @@
 package com.pessoalprojeto.dscatalog.config;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -15,6 +16,9 @@ anotada com @Configuration, os métodos anotados com @Bean são usados para defi
 onde a lógica necessária para criar e configurar os objetos desejados é colocada. O Spring cuida do 
 processamento desses métodos e do gerenciamento das instâncias dos beans correspondentes.*/
 public class AppConfig {
+	
+	@Value("${jwt.secret}")
+	private String jwtsecret;
 	
 	@Bean
 	/*A anotação @Bean no Spring indica que um método em uma classe anotada com @Configuration cria e 
@@ -33,7 +37,7 @@ public class AppConfig {
 	@Bean
 	public JwtAccessTokenConverter accessTokenConverter() {
 		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
-		tokenConverter.setSigningKey("MY-JWT-SECRET");
+		tokenConverter.setSigningKey(jwtsecret);
 		return tokenConverter;
 	}
 
