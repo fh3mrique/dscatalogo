@@ -3,6 +3,8 @@ package com.pessoalprojeto.dscatalog.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
+import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
 @Configuration
 /*A anotação @Configuration no Spring é usada para fornecer configurações para o ambiente de execução 
@@ -25,6 +27,19 @@ public class AppConfig {
 		você pode gerar senhas criptografadas com o método encode(). Isso ajuda a proteger as senhas contra 
 		ataques de força bruta.*/
 		return new BCryptPasswordEncoder();
+	}
+	
+	/*Beans para token JWT (Spring Boot 2 apenas)*/
+	@Bean
+	public JwtAccessTokenConverter accessTokenConverter() {
+		JwtAccessTokenConverter tokenConverter = new JwtAccessTokenConverter();
+		tokenConverter.setSigningKey("MY-JWT-SECRET");
+		return tokenConverter;
+	}
+
+	@Bean
+	public JwtTokenStore tokenStore() {
+		return new JwtTokenStore(accessTokenConverter());
 	}
 
 }
