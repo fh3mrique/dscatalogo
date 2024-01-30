@@ -10,15 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 //import org.springframework.data.domain.Sort.Direction;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 //import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.pessoalprojeto.dscatalog.dto.ProductDTO;
@@ -36,11 +29,13 @@ public class ProductController {
 	// MÉTODOS //implementações do método de acesso ao service do Controller
 
 	@GetMapping
-	public ResponseEntity<Page<ProductDTO>> findAllPaged(Pageable pageable) {
+	public ResponseEntity<Page<ProductDTO>> findAllPaged(
+			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
+			Pageable pageable) {
 		
 		//PARÂMETROS : page, size, sort para postman
 
-		Page<ProductDTO> lista = service.findAllPaged(pageable);
+		Page<ProductDTO> lista = service.findAllPaged(categoryId, pageable);
 
 		return ResponseEntity.ok().body(lista);
 	}

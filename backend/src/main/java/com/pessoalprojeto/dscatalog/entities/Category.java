@@ -52,6 +52,7 @@ armazenado ou transmitido, e posteriormente convertido de volta para o seu estad
 	representa um instante na linha do tempo em UTC (Tempo Universal Coordenado).*/
 	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant createdAt; //instante que essse registro foi criado
+	@Column(columnDefinition = "TIMESTAMP WITHOUT TIME ZONE")
 	private Instant updateAt; //instante que essse registro foi criado
 	
 	//mapeamento da volta (uma categoria deve conhecer os produtos associados a ela)
