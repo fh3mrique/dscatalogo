@@ -3,8 +3,12 @@ package com.pessoalprojeto.dscatalog.config;
 
 import java.util.Arrays;
 
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.web.servlet.FilterRegistrationBean;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.Ordered;
 import org.springframework.core.env.Environment;
 import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -12,9 +16,13 @@ import org.springframework.security.oauth2.config.annotation.web.configuration.E
 import org.springframework.security.oauth2.config.annotation.web.configuration.ResourceServerConfigurerAdapter;
 import org.springframework.security.oauth2.config.annotation.web.configurers.ResourceServerSecurityConfigurer;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
+import org.springframework.web.filter.CorsFilter;
 
 
-/*A classe ResourceServerConfigurerAdapter do Spring Security simplifica a configuração do servidor de recursos em uma 
+/*A classe ResourceServerConfigurerAdapter do Spring Security simplifica a configuração do servidor de recursos em uma
 aplicação Spring Boot. Ela oferece métodos convenientes para personalizar a segurança do servidor de recursos e proteger 
 os endpoints da API. Ao estender essa classe e anotá-la com @Configuration, é possível sobrescrever os métodos para definir 
 as configurações desejadas de forma fácil e flexível. Isso permite que você defina regras de autorização, configure a 
@@ -69,9 +77,32 @@ public class ResourceServerConfig  extends ResourceServerConfigurerAdapter{
 		/*Requer que o usuário tenha o papel (role) "ADMIN" para acessar as URLs definidas na lista ADMIN*/
 		.antMatchers(ADMIN).hasAnyRole("ADMIN")
 		/*Requer autenticação para todas as outras URLs que não foram configuradas anteriormente.*/
-		.anyRequest().authenticated();	
+		.anyRequest().authenticated();
+
+		http.cors().configurationSource(corsConfigurationSource());
 	}
-	
-	
+
+	@Bean
+	public CorsConfigurationSource corsConfigurationSource() {
+		CorsConfiguration corsConfig = new CorsConfiguration();
+		corsConfig.setAllowedOriginPatterns(Arrays.asList("*"));
+		corsConfig.setAllowedMethods(Arrays.asList("POST", "GET", "PUT", "DELETE", "PATCH"));
+		corsConfig.setAllowCredentials(true);
+		corsConfig.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
+
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", corsConfig);
+		return source;
+	}
+
+	@Bean
+	public FilterRegistrationBean<CorsFilter> corsFilter() {
+		FilterRegistrationBean<CorsFilter> bean
+				= new FilterRegistrationBean<>(new CorsFilter(corsConfigurationSource()));
+		bean.setOrder(Ordered.HIGHEST_PRECEDENCE);
+		return bean;
+	}
+
+
 
 }

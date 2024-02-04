@@ -70,7 +70,7 @@ public class ProductServiceIntegrationTest {
 		consulta em bancos de dados.*/
 		PageRequest pageRequest = PageRequest.of(0, 10);
 		
-		Page<ProductDTO> result = productService.findAllPaged(name, categoryId, pageRequest);
+		Page<ProductDTO> result = productService.findAllPaged("", 0L, pageRequest);
 		
 		//testando se a pagina é vazia
 		Assertions.assertFalse(result.isEmpty());
@@ -88,7 +88,7 @@ public class ProductServiceIntegrationTest {
 		//não existe página 50
 		PageRequest pageRequest = PageRequest.of(50, 10);
 		
-		Page<ProductDTO> result = productService.findAllPaged(name, categoryId, pageRequest);
+		Page<ProductDTO> result = productService.findAllPaged("", 0L, pageRequest);
 		
 		Assertions.assertTrue(result.isEmpty());
 	}
@@ -100,7 +100,7 @@ public class ProductServiceIntegrationTest {
 		//																								criterio de ordenação			
 		PageRequest pageRequest = PageRequest.of(0, 10, Sort.by("name"));
 		
-		Page<ProductDTO> result = productService.findAllPaged(name, categoryId, pageRequest);
+		Page<ProductDTO> result = productService.findAllPaged("", 0L, pageRequest);
 		
 		Assertions.assertFalse(result.isEmpty());
 		Assertions.assertEquals("Macbook Pro", result.getContent().get(0).getName());
