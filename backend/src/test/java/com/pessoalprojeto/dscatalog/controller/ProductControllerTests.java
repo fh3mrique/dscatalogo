@@ -76,7 +76,7 @@ public class ProductControllerTests {
 		//● SIMULANDO COMPORTAMENTOS DO MÉTODO DO MOCK productService
 		
 		//comportamento simulado productService.findAllPaged
-		Mockito.when(productService.findAllPaged(categoryId, ArgumentMatchers.any())).thenReturn(page);
+		Mockito.when(productService.findAllPaged(name, categoryId, ArgumentMatchers.any())).thenReturn(page);
 		
 		//comportamento simulado productService.findById
 		Mockito.when(productService.findById(idExistente)).thenReturn(produtoDto);
