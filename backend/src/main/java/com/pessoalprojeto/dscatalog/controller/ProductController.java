@@ -30,7 +30,7 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAllPaged(
-			@RequestParam(value = "name", defaultValue = "0") String name,
+			@RequestParam(value = "name", defaultValue = "") String name,
 			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
 			Pageable pageable) {
 		
