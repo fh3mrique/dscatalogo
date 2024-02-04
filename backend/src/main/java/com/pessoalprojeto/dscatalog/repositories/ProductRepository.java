@@ -8,9 +8,16 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import com.pessoalprojeto.dscatalog.entities.Product;
 import org.springframework.data.jpa.repository.Query;
 
+import java.util.List;
+
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Query("SELECT DISTINCT obj FROM Product obj INNER JOIN obj.categories cats WHERE " +
-            "(:category IS NULL OR :category IN cats) AND " +
+            "(COALESCE(:categories) IS NULL OR cats IN :categories) AND " +
             "(LOWER(obj.name) LIKE LOWER(CONCAT('%', :name, '%')) )")
-    Page<Product> find(String name, Category category, Pageable pageable);
+    Page<Product> find(String name, List<Category> categories, Pageable pageable);
+
+    @Query("SELECT obj FROM Product obj JOIN FETCH obj.categories WHERE obj in :products")
+    List<Product> findProductsWithCategories(List<Product> products);
+
+
 }
