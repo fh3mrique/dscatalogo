@@ -1,6 +1,6 @@
 import NavBar from "../../components/NavBar"
-
 import MainImage from "../../assets/imgs/main-image.svg"
+import './styles.css'
 
 
 const Home = () => {
