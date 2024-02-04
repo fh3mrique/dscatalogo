@@ -36,7 +36,7 @@ public class ProductController {
 		
 		//PARÂMETROS : page, size, sort para postman
 
-		Page<ProductDTO> lista = service.findAllPaged(name ,categoryId, pageable);
+		Page<ProductDTO> lista = service.findAllPaged(name.trim() ,categoryId, pageable);
 
 		return ResponseEntity.ok().body(lista);
 	}
