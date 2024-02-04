@@ -30,12 +30,14 @@ public class ProductController {
 
 	@GetMapping
 	public ResponseEntity<Page<ProductDTO>> findAllPaged(
+			@RequestParam(value = "name", defaultValue = "") String name,
+
 			@RequestParam(value = "categoryId", defaultValue = "0") Long categoryId,
 			Pageable pageable) {
 		
 		//PARÂMETROS : page, size, sort para postman
 
-		Page<ProductDTO> lista = service.findAllPaged(categoryId, pageable);
+		Page<ProductDTO> lista = service.findAllPaged(name.trim() ,categoryId, pageable);
 
 		return ResponseEntity.ok().body(lista);
 	}
