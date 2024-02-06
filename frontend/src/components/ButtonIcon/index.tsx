@@ -1,11 +1,18 @@
-import './styles.css'
+import './styles.css';
+import ArrowIcon from '../../assets/imgs/Seta.svg';
 
 const ButtonIcon = () => {
   return (
-    <button className="btn btn-primary btn-icon">
+    <div className="btn-container">
+      <button className="btn btn-primary">
         <h6>INICIE AGORA A SUA BUSCA</h6>
-    </button>
-  )
-}
+      </button>
 
-export default ButtonIcon
+      <div className="btn-icon-container">
+        <img src={ArrowIcon} alt="" />
+      </div>
+    </div>
+  );
+};
+
+export default ButtonIcon;
