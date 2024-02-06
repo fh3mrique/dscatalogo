@@ -1,5 +1,6 @@
 import './styles.css'
 import ProductImg from '../../assets/imgs/product.png'
+import ProductPrice from '../../components/ProductPrice'
 
 const ProductCard = () => {
   return (
@@ -9,7 +10,7 @@ const ProductCard = () => {
         </div>
         <div className='card-bottom-container'>
             <h6>Nome do Produto</h6>
-            <p>2334.65</p>
+            <ProductPrice/>
         </div>
     </div>
   )
