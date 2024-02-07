@@ -1,10 +1,11 @@
 import ProductPrice from '../../components/ProductPrice'
 import ArrowIcon from '../../assets/imgs/Seta.svg'
+import './styles.css'
 
 const ProductDetails = () => {
   return (
     <div className="product-details-container">
-        <div className="product-details-card">
+        <div className=" base-card product-details-card">
 
             <div className="goback-container">
                 <img src={ArrowIcon} alt="" />
