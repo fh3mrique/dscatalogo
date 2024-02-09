@@ -1,16 +1,22 @@
-
+import './styles.css';
 const NavBar = () => {
   return (
-    <nav>
+    <nav className="admin-nav-container">
       <ul>
         <li>
-          <p>Produtos</p>
+          <a href="" className='admin-nav-item active'>
+            <p>Produtos</p>
+          </a>
         </li>
         <li>
-          <p>Categorias</p>
+          <a href="" className='admin-nav-item'>
+            <p>Categorias</p>
+          </a>
         </li>
         <li>
-          <p>Usúarios</p>
+          <a href="" className='admin-nav-item'>
+            <p>Usúarios</p>
+          </a>
         </li>
       </ul>
     </nav>
