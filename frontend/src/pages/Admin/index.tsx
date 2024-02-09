@@ -1,7 +1,13 @@
+import NavBar from "./NavBar"
 
 const Admin = () => {
   return (
-    <h1>PAGINA DO ADMIN</h1>
+    <div className="admin-container">
+      <NavBar/>
+      <div className="admin-content">
+        <h1>Conteudo</h1>
+      </div>
+    </div>
   )
 }
 
