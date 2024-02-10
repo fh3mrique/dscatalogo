@@ -1,22 +1,25 @@
 import ProductPrice from '../../components/ProductPrice';
 import ArrowIcon from '../../assets/imgs/Seta.svg';
 import './styles.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import axios from 'axios';
 import { BASE_URL } from '../../util/request';
 import { useEffect, useState } from 'react';
 import { Product } from '../../types/product';
 
 const ProductDetails = () => {
+  type UrlParams = {
+    productId: string;
+  };
+  const { productId } = useParams<UrlParams>();
 
   const [product, setProduct] = useState<Product>();
 
- useEffect(() =>{
-  axios.get(BASE_URL + "/products/2")
-  .then(response => {
-    setProduct(response.data)
-  });
- }, [])
+  useEffect(() => {
+    axios.get(`${BASE_URL}/products/${productId}`).then((response) => {
+      setProduct(response.data);
+    });
+  }, [productId]);
   return (
     <div className="product-details-container">
       <div className=" base-card product-details-card">
@@ -30,22 +33,17 @@ const ProductDetails = () => {
         <div className="row">
           <div className="col-xl-6">
             <div className="img-container">
-              <img
-                src={product?.imgUrl}
-                alt={product?.name}
-              />
+              <img src={product?.imgUrl} alt={product?.name} />
             </div>
             <div className="name-price-container">
               <h1>{product?.name}</h1>
               {product && <ProductPrice price={product?.price} />}
-            </div> 
+            </div>
           </div>
           <div className="col-xl-6">
             <div className="description-container">
               <h2>Descrição do produto</h2>
-              <p>
-                {product?.description}
-              </p>
+              <p>{product?.description}</p>
             </div>
           </div>
         </div>
