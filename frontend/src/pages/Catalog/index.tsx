@@ -3,25 +3,48 @@ import ProductCard from '../../components/ProductCard';
 import { Link } from 'react-router-dom';
 import './styles.css'
 import Pagination from '../../components/Pagination';
+import { useEffect, useState } from 'react';
+import { SpringPage } from '../../types/vendor/spring';
+import { AxiosParams } from '../../types/vendor/axios';
+import { BASE_URL } from '../../util/request';
+import axios from 'axios';
 
 const Catalog = () => {
-  const product: Product = {
-    id: 1,
-    name: 'The Lord of the Rings',
-    description:
-      'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.',
-    price: 90.5,
-    imgUrl:
-      'https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg',
-    date: '2020-07-13T20:50:07.123450Z',
-    categories: [
-      {
-        id: 2,
-        name: 'Eletrônicos',
-      },
-    ],
-  };
+  
+  const [page, setPage] = useState<SpringPage<Product>>();
 
+  useEffect(()=>{
+
+    const params: AxiosParams = {
+      method: 'GET',
+      url: `${BASE_URL}/products`,
+      params:{
+        page:0,
+        size:12
+      }
+    }
+
+    axios(params)
+    .then(response =>{
+      setPage(response.data)
+      console.log(page);
+    })
+  }, [])
+
+  const product = {
+    "id": 1,
+    "name": "The Lord of the Rings",
+    "description": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
+    "price": 90.5,
+    "imgUrl": "https://raw.githubusercontent.com/devsuperior/dscatalog-resources/master/backend/img/1-big.jpg",
+    "date": "2020-07-13T20:50:07.123450Z",
+    "categories": [
+        {
+            "id": 2,
+            "name": "Eletrônicos"
+        }
+    ]
+}
   return (
     <>
       <div className="container my-4 catalog-container">
