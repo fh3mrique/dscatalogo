@@ -6,6 +6,8 @@ import axios from 'axios';
 import { BASE_URL } from '../../util/request';
 import { useEffect, useState } from 'react';
 import { Product } from '../../types/product';
+import ProductInfoLoader from './ProductInfoLoader';
+import ProductDetailsLoader from './ProductDetailsLoader';
 
 const ProductDetails = () => {
   type UrlParams = {
@@ -15,10 +17,18 @@ const ProductDetails = () => {
 
   const [product, setProduct] = useState<Product>();
 
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
-    axios.get(`${BASE_URL}/products/${productId}`).then((response) => {
-      setProduct(response.data);
-    });
+    setIsLoading(true);
+    axios
+      .get(`${BASE_URL}/products/${productId}`)
+      .then((response) => {
+        setProduct(response.data);
+      })
+      .finally(() => {
+        setIsLoading(false);
+      });
   }, [productId]);
   return (
     <div className="product-details-container">
@@ -31,21 +41,30 @@ const ProductDetails = () => {
         </Link>
 
         <div className="row">
-          <div className="col-xl-6">
-            <div className="img-container">
-              <img src={product?.imgUrl} alt={product?.name} />
+          {isLoading ? (
+            <ProductInfoLoader />
+          ) : (
+            <div className="col-xl-6">
+              <div className="img-container">
+                <img src={product?.imgUrl} alt={product?.name} />
+              </div>
+              <div className="name-price-container">
+                <h1>{product?.name}</h1>
+                {product && <ProductPrice price={product?.price} />}
+              </div>
             </div>
-            <div className="name-price-container">
-              <h1>{product?.name}</h1>
-              {product && <ProductPrice price={product?.price} />}
+          )}
+
+          {isLoading ? (
+            <ProductDetailsLoader />
+          ) : (
+            <div className="col-xl-6">
+              <div className="description-container">
+                <h2>Descrição do produto</h2>
+                <p>{product?.description}</p>
+              </div>
             </div>
-          </div>
-          <div className="col-xl-6">
-            <div className="description-container">
-              <h2>Descrição do produto</h2>
-              <p>{product?.description}</p>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
