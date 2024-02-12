@@ -29,8 +29,8 @@ const Catalog = () => {
       .then((response) => {
         setPage(response.data);
       })
-      .finally(()=>{
-        setIsLoading(false)
+      .finally(() => {
+        setIsLoading(false);
       });
   }, []);
 
@@ -41,14 +41,17 @@ const Catalog = () => {
           <h1>Catálogo de produtos</h1>
         </div>
         <div className="row">
-          {( isLoading ? <CardLoader/>:
+          {isLoading ? (
+            <CardLoader />
+          ) : (
             page?.content.map((product) => (
-            <div className="col-sm-6 col-lg-4 col-xl-3" key={product.id}>
-              <Link to="/products/1">
-                <ProductCard product={product} />
-              </Link>
-            </div>
-          )))}
+              <div className="col-sm-6 col-lg-4 col-xl-3" key={product.id}>
+                <Link to="/products/1">
+                  <ProductCard product={product} />
+                </Link>
+              </div>
+            ))
+          )}
         </div>
 
         <div className="row">
