@@ -1,5 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import AuthImage from '../../../assets/imgs/Desenho.svg';
+import './styles.css'
+
 const Auth = () => {
   return (
     <div className="auth-container">
