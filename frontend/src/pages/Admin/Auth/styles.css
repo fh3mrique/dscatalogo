@@ -7,12 +7,10 @@
 
 .auth-banner-container {
   display: none;
-  border: 1px solid orange;
 }
 
 .auth-form-container {
   width: 100%;
-  border: 1px solid blue;
 }
 
 @media (min-width: 576px) {
@@ -49,7 +47,6 @@
   }
 
   .auth-banner-container img {
-    border: solid 1px green;
   }
 }
 
