@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import ButtonIcon from '../../../../components/ButtonIcon';
-
+import './styles.css'
 
 const Login = () => {
   return (
