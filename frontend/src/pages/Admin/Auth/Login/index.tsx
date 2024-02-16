@@ -2,21 +2,25 @@ import { Link } from 'react-router-dom';
 import ButtonIcon from '../../../../components/ButtonIcon';
 import './styles.css';
 import { useForm } from 'react-hook-form';
+import { requestBackendLogin } from '../../../../util/request';
 
 const Login = () => {
-
   type FormData = {
     username: string;
-    password: string
-  } 
+    password: string;
+  };
 
   const { register, handleSubmit } = useForm<FormData>();
 
-  const onSubmit = (formData : FormData) =>{
-    console.log(formData);
-  } 
-
-
+  const onSubmit = (formData: FormData) => {
+    requestBackendLogin(formData)
+      .then((response) => {
+        console.log('seucesso', response);
+      })
+      .catch(error => {
+        console.log('ERRO', error);
+      });
+  };
 
   return (
     <div className="base-card login-card">
