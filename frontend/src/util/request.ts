@@ -1,5 +1,5 @@
 export const BASE_URL = 'http://localhost:8080';
-import axios from 'axios';
+import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 
 const CLIENT_ID = 'dscatalog';
@@ -41,6 +41,10 @@ export const requestBackendLogin = (loginData: loginData) => {
     data: data,
     headers: headers,
   });
+};
+
+export const requestBackend = (config: AxiosRequestConfig) => {
+  return axios({...config, baseURL: BASE_URL});
 };
 
 export const saveAuthData = (obj: loginResponse) => {
