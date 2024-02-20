@@ -5,6 +5,15 @@ import qs from 'qs';
 const CLIENT_ID = 'dscatalog';
 const CLIENT_SECRET = 'dscatalog123';
 
+type loginResponse = {
+  access_token: string;
+  token_type: string;
+  expires_in: number;
+  scope: string;
+  userFirstName: string;
+  userId: number;
+};
+
 const basicHeader = () => {
   return 'Basic ' + window.btoa(CLIENT_ID + ':' + CLIENT_SECRET);
 };
@@ -17,12 +26,12 @@ type loginData = {
 export const requestBackendLogin = (loginData: loginData) => {
   const headers = {
     'Content-Type': 'application/x-www-form-urlencoded',
-    'Authorization': basicHeader()
+    Authorization: basicHeader(),
   };
 
   const data = qs.stringify({
     ...loginData,
-    grant_type: 'password'
+    grant_type: 'password',
   });
 
   return axios({
@@ -32,4 +41,14 @@ export const requestBackendLogin = (loginData: loginData) => {
     data: data,
     headers: headers,
   });
+};
+
+export const saveAuthData = (obj: loginResponse) => {
+  localStorage.setItem('authData', JSON.stringify(obj));
+};
+
+export const getAuthData = () => {
+  const str = localStorage.getItem('authData') ?? '{}';
+  const obj = JSON.parse(str);
+  return obj as loginResponse;
 };
