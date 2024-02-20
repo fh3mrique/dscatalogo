@@ -1,4 +1,4 @@
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import ButtonIcon from '../../../../components/ButtonIcon';
 import './styles.css';
 import { useForm } from 'react-hook-form';
@@ -8,6 +8,7 @@ import {
   saveAuthData,
 } from '../../../../util/request';
 import { useState } from 'react';
+
 
 const Login = () => {
   type FormData = {
@@ -23,6 +24,8 @@ const Login = () => {
 
   const [hasError, setHasError] = useState(false);
 
+  const navigate = useNavigate();
+
   const onSubmit = (formData: FormData) => {
     requestBackendLogin(formData)
       .then((response) => {
@@ -31,6 +34,7 @@ const Login = () => {
         console.log('TOKEN GERADO' + token);
         setHasError(false);
         console.log('seucesso', response);
+        navigate('/admin'); // Navega para a rota '/admin'
       })
       .catch((error) => {
         setHasError(true);
