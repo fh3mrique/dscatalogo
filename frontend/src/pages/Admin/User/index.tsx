@@ -10,6 +10,7 @@ const Users = () => {
   useEffect(() => {
     const params: AxiosRequestConfig = {
       url: '/users',
+      /* withCredentials: é o que deixa a requisição acessivel apenas por token */
       withCredentials: true,
       params: {
         page: 0,
