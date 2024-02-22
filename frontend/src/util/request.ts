@@ -63,3 +63,26 @@ export const getAuthData = () => {
   const obj = JSON.parse(str);
   return obj as loginResponse;
 };
+
+// Add a request interceptor
+axios.interceptors.request.use(function (config) {
+  console.log("INTECPTOR ANTES DA REQUISIÇÃO")
+  return config;
+}, function (error) {
+  // Do something with request error
+  console.log("INTECPTOR ANTES DA REQUISIÇÃO")
+  return Promise.reject(error);
+});
+
+// Add a response interceptor
+axios.interceptors.response.use(function (response) {
+  // Any status code that lie within the range of 2xx cause this function to trigger
+  // Do something with response data
+  console.log("INTECPTOR RESPOSTA COM SUCESSO")
+  return response;
+}, function (error) {
+  // Any status codes that falls outside the range of 2xx cause this function to trigger
+  // Do something with response error
+  console.log("INTECPTOR RESPOSTA COM ERROR")
+  return Promise.reject(error);
+});
