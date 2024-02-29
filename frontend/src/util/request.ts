@@ -1,11 +1,20 @@
 export const BASE_URL = 'http://localhost:8080';
 import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
+import { jwtDecode } from 'jwt-decode';
 
 /* import { useHistoryInstance } from './history'; */
 
 const CLIENT_ID = 'dscatalog';
 const CLIENT_SECRET = 'dscatalog123';
+
+type Role = 'ROLE_OPERATOR' | 'ROLE_ADMIN';
+
+type TokenData = {
+  exp: number;
+  user_name: string;
+  authorities: Role[];
+};
 
 type loginResponse = {
   access_token: string;
@@ -97,3 +106,13 @@ axios.interceptors.response.use(function (response) {
   console.log("INTERCEPTOR RESPOSTA COM ERROR");
   return Promise.reject(error);
 }); */
+
+export const getTokenData = (): TokenData | undefined => {
+  const loginResponse = getAuthData();
+
+  try {
+    return jwtDecode(loginResponse.access_token) as TokenData;
+  } catch (error) {
+    return undefined;
+  }
+};
