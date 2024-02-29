@@ -4,13 +4,16 @@ import './styles.css';
 import { useForm } from 'react-hook-form';
 import {
   getAuthData,
+  getTokenData,
   requestBackendLogin,
   saveAuthData,
 } from '../../../../util/request';
-import { useState } from 'react';
-
+import { useContext, useState } from 'react';
+import { AuthContext } from '../../../../AuthContext';
 
 const Login = () => {
+  const { setAuthContextData } = useContext(AuthContext);
+
   type FormData = {
     username: string;
     password: string;
@@ -34,6 +37,10 @@ const Login = () => {
         console.log('TOKEN GERADO' + token);
         setHasError(false);
         console.log('seucesso', response);
+        setAuthContextData({
+          autheticated: true,
+          tokenData: getTokenData(),
+        });
         navigate('/admin'); // Navega para a rota '/admin'
       })
       .catch((error) => {

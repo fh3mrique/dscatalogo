@@ -1,13 +1,21 @@
 import './assets/styles/custom.scss';
 import './App.css';
 import Rotas from './Rotas';
+import { useState } from 'react';
+import { AuthContext, AuthContextData } from './AuthContext';
 
-/* CAPITULO 2: INTEGRAÇÃO COM API */
+/* 2° Prover o contexto global
+Crie um useState no App.tsx */
 
 function App() {
+  const [authContextData, setAuthContextData] = useState<AuthContextData>({
+    autheticated: false,
+  });
   return (
     <>
-      <Rotas/>
+      <AuthContext.Provider value={{ authContextData, setAuthContextData }}>
+        <Rotas />
+      </AuthContext.Provider>
     </>
   );
 }
