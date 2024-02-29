@@ -10,7 +10,7 @@ const CLIENT_SECRET = 'dscatalog123';
 
 type Role = 'ROLE_OPERATOR' | 'ROLE_ADMIN';
 
-type TokenData = {
+export type TokenData = {
   exp: number;
   user_name: string;
   authorities: Role[];
@@ -73,6 +73,10 @@ export const getAuthData = () => {
   const str = localStorage.getItem('authData') ?? '{}';
   const obj = JSON.parse(str);
   return obj as loginResponse;
+};
+
+export const removeAuthData = () => {
+  localStorage.removeItem('authData');
 };
 
 /* export const isAuthenticated = (): boolean => {
