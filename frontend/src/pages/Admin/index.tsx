@@ -1,7 +1,8 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 import NavBar from './NavBar';
 import './styles.css';
-import Users from './User';
+import Users from './Users';
+import Products from './Products';
 
 // @ts-ignore
 const PrivateRoute = ({ children, redirectTo }) => {
@@ -22,10 +23,10 @@ const Admin = () => {
           <Route path="users" element={<Users />} /> */}
 
           <Route
-            path="products"
+            path="products/*"
             element={
               <PrivateRoute redirectTo="/admin/auth/login">
-                {<h1>Product CRUD</h1>}
+                <Products/>
               </PrivateRoute>
             }
           />
