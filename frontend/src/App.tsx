@@ -7,6 +7,8 @@ import { AuthContext, AuthContextData } from './AuthContext';
 /* 2° Prover o contexto global
 Crie um useState no App.tsx */
 
+/* 04. CRUD, paginação, filtros */
+
 function App() {
   const [authContextData, setAuthContextData] = useState<AuthContextData>({
     autheticated: false,
