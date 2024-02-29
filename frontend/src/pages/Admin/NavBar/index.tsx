@@ -1,6 +1,6 @@
 import { NavLink } from 'react-router-dom';
 import './styles.css';
-import { hasAnyRole } from '../../../util/request';
+import { hasAnyRole } from '../../../util/auth';
 const NavBar = () => {
   return (
     <nav className="admin-nav-container">

@@ -3,13 +3,12 @@ import ButtonIcon from '../../../../components/ButtonIcon';
 import './styles.css';
 import { useForm } from 'react-hook-form';
 import {
-  getAuthData,
   getTokenData,
-  requestBackendLogin,
-  saveAuthData,
-} from '../../../../util/request';
+} from '../../../../util/auth';
 import { useContext, useState } from 'react';
 import { AuthContext } from '../../../../AuthContext';
+import { requestBackendLogin } from '../../../../util/request';
+import { getAuthData, saveAuthData } from '../../../../util/storage';
 
 const Login = () => {
   const { setAuthContextData } = useContext(AuthContext);
