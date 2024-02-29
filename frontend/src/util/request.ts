@@ -2,6 +2,8 @@ export const BASE_URL = 'http://localhost:8080';
 import axios, { AxiosRequestConfig } from 'axios';
 import qs from 'qs';
 
+/* import { useHistoryInstance } from './history'; */
+
 const CLIENT_ID = 'dscatalog';
 const CLIENT_SECRET = 'dscatalog123';
 
@@ -64,25 +66,34 @@ export const getAuthData = () => {
   return obj as loginResponse;
 };
 
+export const isAuthenticated = (): boolean => {
+  const authData = getAuthData();
+  // Verifica se há dados de autenticação e se o token de acesso está presente e não está vazio
+  return !!authData && !!authData.access_token;
+};
+
+/* ignore quando for implementar rotas privadas */
+
+/* // Obtém a instância de useNavigate
+const history = useHistoryInstance();
+
 // Add a request interceptor
 axios.interceptors.request.use(function (config) {
-  console.log("INTECPTOR ANTES DA REQUISIÇÃO")
+  console.log("INTERCEPTOR ANTES DA REQUISIÇÃO");
   return config;
 }, function (error) {
-  // Do something with request error
-  console.log("INTECPTOR ANTES DA REQUISIÇÃO")
+  console.log("INTERCEPTOR ANTES DA REQUISIÇÃO");
   return Promise.reject(error);
 });
 
 // Add a response interceptor
 axios.interceptors.response.use(function (response) {
-  // Any status code that lie within the range of 2xx cause this function to trigger
-  // Do something with response data
-  console.log("INTECPTOR RESPOSTA COM SUCESSO")
+  console.log("INTERCEPTOR RESPOSTA COM SUCESSO");
   return response;
 }, function (error) {
-  // Any status codes that falls outside the range of 2xx cause this function to trigger
-  // Do something with response error
-  console.log("INTECPTOR RESPOSTA COM ERROR")
+  if (error.response.status === 401 || error.response.status === 403){
+    history("/admin/auth"); // Use a instância de useNavigate() para redirecionamento
+  }
+  console.log("INTERCEPTOR RESPOSTA COM ERROR");
   return Promise.reject(error);
-});
+}); */
