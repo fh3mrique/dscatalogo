@@ -75,11 +75,11 @@ export const getAuthData = () => {
   return obj as loginResponse;
 };
 
-export const isAuthenticated = (): boolean => {
+/* export const isAuthenticated = (): boolean => {
   const authData = getAuthData();
   // Verifica se há dados de autenticação e se o token de acesso está presente e não está vazio
   return !!authData && !!authData.access_token;
-};
+}; */
 
 /* ignore quando for implementar rotas privadas */
 
@@ -115,4 +115,11 @@ export const getTokenData = (): TokenData | undefined => {
   } catch (error) {
     return undefined;
   }
+};
+
+export const isAuthenticated = (): boolean => {
+  //Decodificar o token (pode lançar exceção)
+  const tokenData = getTokenData();
+
+  return tokenData && tokenData.exp * 1000 > Date.now() ? true : false;
 };
