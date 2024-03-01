@@ -7,11 +7,17 @@ const Form = () => {
         <h1 className="product-crud-form-title">DADOS DO PRODUTOS</h1>
 
         <form action="">
-          <div className="row">
-            <div className="col-lg-6">
-              <input type="text" className="form-control base-input" />
-              <input type="text" className="form-control base-input" />
-              <input type="text" className="form-control base-input" />
+          <div className="row product-crud-inputs-container">
+            <div className="col-lg-6 product-crud-inputs-left-container">
+              <div className="margin-bottom-30">
+                <input type="text" className="form-control base-input" />
+              </div>
+              <div className="margin-bottom-30">
+                <input type="text" className="form-control base-input" />
+              </div>
+              <div>
+                <input type="text" className="form-control base-input" />
+              </div>
             </div>
             <div className="col-lg-6">
               <textarea
@@ -22,7 +28,7 @@ const Form = () => {
             </div>
           </div>
 
-          <div>
+          <div className='product-crud-buttons-container'>
             <button className="btn btn-outline-danger">CANCELAR</button>
             <button className="btn btn-primary">SALVA</button>
           </div>
