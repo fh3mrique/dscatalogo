@@ -21,6 +21,10 @@ const List = () => {
         id: 1,
         name: 'Camisatas',
       },
+      {
+        id: 3,
+        name: 'filmes',
+      },
     ],
   };
   return (
