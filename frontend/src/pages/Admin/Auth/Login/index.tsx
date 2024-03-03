@@ -13,7 +13,7 @@ import { getAuthData, saveAuthData } from '../../../../util/storage';
 const Login = () => {
   const { setAuthContextData } = useContext(AuthContext);
 
-  type FormData = {
+  type CredentialDTO = {
     username: string;
     password: string;
   };
@@ -22,13 +22,13 @@ const Login = () => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<FormData>();
+  } = useForm<CredentialDTO>();
 
   const [hasError, setHasError] = useState(false);
 
   const navigate = useNavigate();
 
-  const onSubmit = (formData: FormData) => {
+  const onSubmit = (formData: CredentialDTO) => {
     requestBackendLogin(formData)
       .then((response) => {
         saveAuthData(response.data);
