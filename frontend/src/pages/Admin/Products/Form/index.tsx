@@ -3,6 +3,7 @@ import './styles.css';
 import { Product } from '../../../../types/product';
 import { requestBackend } from '../../../../util/request';
 import { AxiosRequestConfig } from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const Form = () => {
   const {
@@ -22,6 +23,14 @@ const Form = () => {
       console.log(response.data); // Navega para a rota '/admin'
     });
   };
+
+
+  const navigate = useNavigate();
+
+
+  const handleCancel = () =>{
+    navigate('/admin/products')
+  }
 
   return (
     <div className="product-crud-container">
@@ -47,26 +56,49 @@ const Form = () => {
                   {errors.name?.message}
                 </div>
               </div>
+
               <div className="margin-bottom-30">
-                <input type="text" className="form-control base-input" />
-              </div>
-              <div>
-                <input type="text" className="form-control base-input" />
+                <input
+                  {...register('price', {
+                    required: 'Campo obrigatório',
+                  })}
+                  type="text"
+                  className={`form-control base-input ${
+                    errors.price ? 'is-invalid' : ''
+                  }`}
+                  placeholder="Preço do Produto"
+                  name="price"
+                />
+                <div className="invalid-feedback d-block">
+                  {errors.price?.message}
+                </div>
               </div>
             </div>
             <div className="col-lg-6">
               <div>
                 <textarea
-                  name=""
                   rows={10}
-                  className="form-control base-input h-auto"
-                ></textarea>
+                  {...register('description', {
+                    required: 'Campo obrigatório',
+                  })}
+                  className={`form-control base-input h-auto ${
+                    errors.price ? 'is-invalid' : ''
+                  }`}
+                  placeholder="Descrição"
+                  name="description"
+                />
+                <div className="invalid-feedback d-block">
+                  {errors.description?.message}
+                </div>
               </div>
             </div>
           </div>
 
           <div className="product-crud-buttons-container">
-            <button className="btn btn-outline-danger product-crud-button">
+            <button
+              className="btn btn-outline-danger product-crud-button"
+              onClick={handleCancel}
+            >
               CANCELAR
             </button>
             <button className="btn btn-primary product-crud-button text-white">

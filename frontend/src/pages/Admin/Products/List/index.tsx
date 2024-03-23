@@ -16,7 +16,7 @@ const List = () => {
       url: `/products`,
       params: {
         page: 0,
-        size: 50,
+        size: 90,
       },
     };
 
